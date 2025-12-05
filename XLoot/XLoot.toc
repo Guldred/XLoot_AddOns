@@ -2,8 +2,9 @@
 ## Title: XLoot |cff7fff7f -Ace2-|r
 ## Notes: A remake of the built-in lootframe. |cffff4488By Xuerian|r.
 ## Notes-zhTW: 拾取物品增強
-## Version: 0.93
+## Version: 0.94
 ## Author: Xuerian
+## X-Maintainer: Guldred
 ## X-Category: Inventory
 ## X-eMail: sky.shell@gmail.com
 ## X-Website: https://github.com/Road-block/XLoot_AddOns/releases

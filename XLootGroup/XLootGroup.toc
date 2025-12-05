@@ -1,8 +1,9 @@
 ## Interface: 11200
 ## Title: XLoot |cFF77BBFFGroup|r
 ## Notes: Minimalistic Group roll frames.
-## Version: 0.1
+## Version: 0.2
 ## Author: Xuerian
+## X-Maintainer: Guldred
 ## X-Category: Interface Enhancements
 ## X-eMail: sky.shell@gmail.com
 ## X-Website: http://wowace.com/index.php/XLoot

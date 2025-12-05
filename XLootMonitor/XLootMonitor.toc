@@ -1,8 +1,9 @@
 ## Interface: 11200
 ## Title: XLoot |cFF77BBFFMonitor|r
 ## Notes: A live monitor of loot picked up by yourself and your group
-## Version: 0.7
+## Version: 0.8
 ## Author: Xuerian
+## X-Maintainer: Guldred
 ## X-Category: Inventory
 ## X-eMail: sky.shell@gmail.com
 ## X-Website: http://wowace.com/index.php/XLoot

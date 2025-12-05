@@ -1,8 +1,9 @@
 ## Interface: 11200
 ## Title: XLoot |cFF77BBFFMaster|r
 ## Notes: Highly configurable master looter dropdown menu
-## Version: 0.5
+## Version: 0.6
 ## Author: Xuerian
+## X-Maintainer: Guldred
 ## X-Category: Raid
 ## X-eMail: sky.shell@gmail.com
 ## X-Website: http://wowace.com/index.php/XLoot
