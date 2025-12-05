@@ -168,6 +168,12 @@ function XLootGroup:RollUpdateClosure(item, time, row, stack, id)
 			row.fsextra:SetText("")
 			niltext = true
 		end
+		
+		if left <= 0 then
+			XLootGroup:CancelGroupLoot(item)
+			return
+		end
+		
 		local point = width*(left/time)+1
 		return row.status.spark:SetPoint("CENTER", row.status, "LEFT", point, 0)
 	end
@@ -274,4 +280,60 @@ function XLootGroup:GroupBuildRow(stack, id)
 	row.candismiss = false
 	row.sizeoffset = 52
 	return row
+end
+
+function XLootGroup:TestRoll(duration)
+	duration = tonumber(duration) or 10
+	local testID = -1000 - math.random(1, 9999)
+	local testTime = duration * 1000
+	local testStartTime = GetTime()
+	
+	local origGetLootRollTimeLeft = GetLootRollTimeLeft
+	local origGetLootRollItemLink = GetLootRollItemLink
+	local origGetLootRollItemInfo = GetLootRollItemInfo
+	local origRollOnLoot = RollOnLoot
+	
+	GetLootRollTimeLeft = function(id)
+		if id == testID then
+			local elapsed = (GetTime() - testStartTime) * 1000
+			return math.max(0, testTime - elapsed)
+		end
+		return origGetLootRollTimeLeft(id)
+	end
+	
+	GetLootRollItemLink = function(id)
+		if id == testID then
+			return "|cff0070dd|Hitem:19019:0:0:0|h[Thunderfury, Blessed Blade of the Windseeker]|h|r"
+		end
+		return origGetLootRollItemLink(id)
+	end
+	
+	GetLootRollItemInfo = function(id)
+		if id == testID then
+			return "Interface\\Icons\\INV_Sword_39", "Test Item", 1, 3, false
+		end
+		return origGetLootRollItemInfo(id)
+	end
+	
+	RollOnLoot = function(id, rollType)
+		if id == testID then
+			DEFAULT_CHAT_FRAME:AddMessage("|cFF44EE66XLootGroup:|r Test roll completed with type: " .. (rollType == 1 and "Need" or rollType == 2 and "Greed" or "Pass"))
+			XLootGroup:CancelGroupLoot(testID)
+			GetLootRollTimeLeft = origGetLootRollTimeLeft
+			GetLootRollItemLink = origGetLootRollItemLink
+			GetLootRollItemInfo = origGetLootRollItemInfo
+			RollOnLoot = origRollOnLoot
+			return
+		end
+		return origRollOnLoot(id, rollType)
+	end
+	
+	XLootGroup:AddGroupLoot(testID, testTime)
+	DEFAULT_CHAT_FRAME:AddMessage("|cFF44EE66XLootGroup:|r Test roll started (" .. duration .. "s). Click Need/Greed/Pass or wait for timeout.")
+end
+
+SLASH_XLOOTGROUPTEST1 = "/xlgtest"
+SLASH_XLOOTGROUPTEST2 = "/xlootgrouptest"
+SlashCmdList["XLOOTGROUPTEST"] = function(msg)
+	XLootGroup:TestRoll(msg)
 end
