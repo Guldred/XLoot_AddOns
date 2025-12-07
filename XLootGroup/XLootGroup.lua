@@ -37,6 +37,7 @@ function XLootGroup:OnEnable()
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 	self:RegisterEvent("START_LOOT_ROLL", "AddGroupLoot")
 	self:RegisterEvent("CANCEL_LOOT_ROLL", "CancelGroupLoot")
+	self:ScheduleRepeatingEvent("XLootGroup_CleanupStaleRolls", self.CleanupStaleRolls, 3, self)
 	
 	if not AA.stacks.roll then
 		local stack = AA:NewAnchor("roll", "Loot Rolls", "Interface\\Buttons\\UI-GroupLoot-Dice-Up", db, self.dewdrop, nil, 'add')
@@ -106,8 +107,21 @@ end
 
 function XLootGroup:OnDisable()
 	self:UnregisterAllEvents()
+	self:CancelScheduledEvent("XLootGroup_CleanupStaleRolls")
 	UIParent:RegisterEvent("START_LOOT_ROLL")
 	UIParent:RegisterEvent("CANCEL_LOOT_ROLL")
+end
+
+function XLootGroup:CleanupStaleRolls()
+	if not AA.stacks.roll then return end
+	for k, row in ipairs(AA.stacks.roll.rowstack) do
+		if row.rollID then
+			local timeLeft = GetLootRollTimeLeft(row.rollID)
+			if timeLeft <= 0 then
+				self:CancelGroupLoot(row.rollID)
+			end
+		end
+	end
 end
 
 function XLootGroup:ResizeButtons()
