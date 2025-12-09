@@ -196,6 +196,7 @@ end
 function XLootGroup:CancelGroupLoot(id, timeout)
 	 for k, row in ipairs(AA.stacks.roll.rowstack) do
 	 	if row.rollID == id then
+			row.rollID = nil
 			row:SetScript("OnUpdate", nil)
 			row.fsextra:SetText("")
 			--local left = GetLootRollTimeLeft(id)
